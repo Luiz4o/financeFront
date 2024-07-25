@@ -102,7 +102,24 @@ function Signin(){
           onChange={(e) => [setPassword(e.target.value), setError("")]}
         />
         <LabelError>{error}</LabelError>
-        <button  onClick={handleLogin}>Entrar</button>
+        <button  onClick={handleLogin}
+        style={{
+          border: '1px solid #000',
+          background: '#000',
+          padding: '10px 10px',
+          borderRadius: '100px',
+          textAlign: 'center',
+          color: '#FFF',
+          display:'flex',
+          fontSize: '18px',
+          marginBottom: '10px',
+          alignItems:'center',
+          cursor: 'pointer',
+          width: '20vh',
+          whiteSpace: 'nowrap',  // Evita que o texto quebre para a próxima linha
+          textOverflow: 'ellipsis',
+          justifyContent:'center'}}
+        >Entrar</button>
         <LabelSignup>
           Não tem uma conta?
           <Strong>
