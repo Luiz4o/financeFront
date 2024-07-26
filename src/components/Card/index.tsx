@@ -31,6 +31,8 @@ interface ICard {
     subtitulo: string,
     descricao:string,
     img: string
+    textButton1: string,
+    textButton2: string
 }
 
 function CardRecomenda(test:ICard) {
@@ -65,7 +67,7 @@ function CardRecomenda(test:ICard) {
                     whiteSpace: 'nowrap',  // Evita que o texto quebre para a próxima linha
                     textOverflow: 'ellipsis',
                   }}
-                >Ver contas atuais
+                >{test.textButton1}
                 </button>
                 <button onClick={handleClickFalse}
                 style={{
@@ -82,7 +84,7 @@ function CardRecomenda(test:ICard) {
                     display: 'inline-block',  // Usa inline-block para manter o texto em uma linha
                     whiteSpace: 'nowrap',  // Evita que o texto quebre para a próxima linha
                     textOverflow: 'ellipsis',
-                  }}>Adicionar nova conta</button>
+                  }}>{test.textButton2}</button>
                 
 
             </div>

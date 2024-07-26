@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ExitButton } from '../ButtonExit'
 
 const textOptions = ['Usuario', 'Receitas' , 'Despesas']
 
@@ -26,7 +27,9 @@ function OptionHeader() {
             {textOptions.map((text) => (
                 <Option><p>{text}</p></Option>
           ))}
+          <ExitButton/>
         </Options>
+        
     )
 }
 

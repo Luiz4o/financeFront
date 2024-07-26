@@ -12,6 +12,8 @@ import axiosInstance from '../../service/axiosInstance';
   flex-direction: column;
   gap: 10px;
   height: 100vh;
+  background-image: linear-gradient(90deg,rgb(116, 221, 177) 35%, rgb(17, 196, 202));
+
 `;
 
  const Content = styled.div`
@@ -23,9 +25,11 @@ import axiosInstance from '../../service/axiosInstance';
   width: 100%;
   box-shadow: 0 1px 2px #0003;
   background-color: white;
-  max-width: 350px;
+  max-width: 600px;
+  height: 650px;
   padding: 20px;
-  border-radius: 5px;
+  border: 1px solid #000;
+  border-radius: 10px;
 `;
 
  const Label = styled.label`
@@ -80,8 +84,8 @@ function Signup() {
       password
     })
 
-    if (response.data.error) {
-      setError(response.data.error);
+    if (res.data.error) {
+      setError(res.data.error);
     } else {
       alert("Usuário cadastrado com sucesso!");
       navigate("/");
@@ -94,8 +98,9 @@ function Signup() {
 
   return (
     <Container>
-      <Label>SISTEMA DE LOGIN</Label>
+      
       <Content>
+        <Label>SISTEMA DE LOGIN</Label>
       <Input
           type="text"
           placeholder="Digite seu Nome"

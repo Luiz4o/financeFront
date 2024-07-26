@@ -41,6 +41,8 @@ function SideBar() {
             subtitulo="Crie aqui suas despesas/receitas"
             descricao="Construindo uma aplicação com a plataforma Google"
             img={Criar}
+            textButton1="Ver contas atuais"
+            textButton2="Adicionar nova conta"
 
             />
         </CardSideBar>

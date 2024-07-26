@@ -4,6 +4,9 @@ import { useState } from "react"
 import { Titulo } from "../Titulo/Titulo"
 import axiosInstance from "../../service/axiosInstance"
 import icon from "../../images/cash.svg"
+import { IRecipe } from "../../Interfaces/IRecipe"
+import down from "../../images/down.svg"
+import negative from "../../images/negative.svg"
 
 const SearchContainer = styled.section`
     background-image: #fff;
@@ -40,21 +43,47 @@ const Resultado = styled.div`
     }
 `
 
-function Search() {
+interface IRecipe{
+price: number,
+description: string,
+date: string,
+userId: number
+}
+
+interface IExpense{
+  cost: number,
+  description: string,
+  date: string,
+  userId: number
+  }
+
+function Search(rec:IRecipe,exp:IExpense) {
     const [recipesSearch, setRecipesSearch] = useState([]);
-  
+    const [expensesSearch, setExpensesSearch] = useState([]);
+
     const handleSearch = async (event) => {
       const textoDigitado = event.target.value.toLowerCase();
   
       try {
-        const response = await axiosInstance.get(`/recipes/1`);
+        const res = await axiosInstance.get(`/expenses/`+localStorage.getItem('user_id'));
+        setExpensesSearch(res.data);
+        const response = await axiosInstance.get(`/recipes/`+localStorage.getItem('user_id'));
         setRecipesSearch(response.data);
+
       } catch (error) {
         console.error("Erro ao buscar receitas:", error);
-        // Trate o erro como preferir (por exemplo, exibindo uma mensagem de erro na UI)
       }
     };
   
+    const formatDate = (dateString: string) => {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      })
+    }
+
     return (
       <SearchContainer>
         <Titulo tamanhoFonte="36px" alinhamento="center">
@@ -65,11 +94,41 @@ function Search() {
           placeholder="Procure suas contas"
           onBlur={handleSearch}
         />
-        {recipesSearch.map((recipe) => (
-          <Resultado key={recipe.id}>
-            <p>{recipe.description}</p>
-            <p>{recipe.price}</p>
+        {recipesSearch.map((rec) => (
+          <Resultado
+          style={{
+            fontSize:'17px',
+          }}
+          key={rec.userId}>
+            <p>{rec.description}</p>
+            <p
+            style={{
+              color:'green'
+            }}
+            >{rec.price}</p>
+            <p>{formatDate(rec.date)}</p>
             <img src={icon}/>
+          </Resultado>
+        ))}
+        {expensesSearch.map((exp) => (
+          <Resultado 
+          style={{
+            fontSize:'17px',
+          }}
+          key={exp.userId}>
+            <p>{exp.description}</p>
+            <p
+            style={{
+              color:'red'
+            }}
+            >{exp.cost}</p>
+            <p>{formatDate(exp.date)}</p>
+            <img
+            style={{
+              height:'95px',
+              
+            }}
+            src={down}/>
           </Resultado>
         ))}
       </SearchContainer>

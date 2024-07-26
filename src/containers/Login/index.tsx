@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, {  useState } from 'react'
 import Input from '../../components/Input';
 import styled from "styled-components";
 import {  Link, useNavigate } from 'react-router-dom';
-import Button from '../../components/Button';
 import axiosInstance from '../../service/axiosInstance';
+// import { useAuth } from '../../components/Contexts/auth';
 
  const Container = styled.div`
   display: flex;
@@ -12,6 +12,8 @@ import axiosInstance from '../../service/axiosInstance';
   flex-direction: column;
   gap: 10px;
   height: 100vh;
+  background-image: linear-gradient(90deg,rgb(116, 221, 177) 35%, rgb(17, 196, 202));
+
 `;
 
  const Content = styled.div`
@@ -23,9 +25,10 @@ import axiosInstance from '../../service/axiosInstance';
   width: 100%;
   box-shadow: 0 1px 2px #0003;
   background-color: white;
-  max-width: 350px;
+  max-width: 600px;
+  height: 650px;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
 `;
 
  const Label = styled.label`
@@ -52,12 +55,15 @@ import axiosInstance from '../../service/axiosInstance';
     color: #676767;
   }`
 
-function Signin(){
-  const navigate = useNavigate();
+  const Login: React.FC = () => {
+    const navigate = useNavigate();
+  
+    // Estado com tipos especificados
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [error, setError] = useState<string>("");
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleLogin = async () => {
     try{
@@ -71,13 +77,21 @@ function Signin(){
     const res = await axiosInstance.post('/auth/login',{
       email,
       password
+    }).then((data)=>{
+      localStorage.setItem('user_id',data.data.id)
+      localStorage.setItem('logado', 'true');
+      localStorage.setItem('user_token', data.data.token);
+      return data
+    }).catch((err)=> {
+      alert(err.response.message)
     })
 
 
-    if (error) {
-      setError(error);
+    if (res.data.error) {
+      setError(res.data.error);
     } else {
       alert("Login feito com sucesso");
+      setIsLoggedIn(true)
       navigate("/home");
     }}catch (error) {
       console.error('Erro ao realizar login:', error);
@@ -87,19 +101,26 @@ function Signin(){
 
   return (
     <Container>
-      <Label>SISTEMA DE LOGIN</Label>
+      
       <Content>
+        <Label>SISTEMA DE LOGIN</Label>
         <Input
           type="email"
           placeholder="Digite seu E-mail"
           value={email}
-          onChange={(e) => [setEmail(e.target.value), setError("")]}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError(""); // Limpa o erro ao alterar o e-mail
+          }}
         />
         <Input
           type="password"
           placeholder="Digite sua Senha"
           value={password}
-          onChange={(e) => [setPassword(e.target.value), setError("")]}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError(""); // Limpa o erro ao alterar a senha
+          }}
         />
         <LabelError>{error}</LabelError>
         <button  onClick={handleLogin}
@@ -131,4 +152,4 @@ function Signin(){
   )
 }
 
-export default Signin
+export default Login

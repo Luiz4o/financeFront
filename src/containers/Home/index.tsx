@@ -2,7 +2,8 @@ import React from 'react'
 import Header from '../../components/Header'
 import Search from '../../components/Search'
 import SideBar from '../../components/SideBar'
-import Formulario from '../../components/Formulario';
+import FormularioRecipe from '../../components/Formulario/FormRecipe';
+import FormularioExpense from '../../components/Formulario/FormExpense';
 
 function Home() {
 // const storageValue=localStorage.getItem('isCreate') ? true : false
@@ -18,11 +19,11 @@ const storageValue = localStorage.getItem('isCreate');
   return (
     <div>
     <Header/>
-    {isCreate ? <Search/> : <Formulario
+    {isCreate ? <Search/> : <FormularioRecipe
     titulo='Informe o valor da Receita'
     descricao='Deixe uma descrição para este Item'
     /> }
-    {isCreate ? '' : <Formulario
+    {isCreate ? '' : <FormularioExpense
     titulo='Informe o valor da Despeza'
     descricao='Deixe uma descrição para este Item'
     /> }

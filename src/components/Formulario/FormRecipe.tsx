@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Button from "../Button";
 import styled from "styled-components";
 import Input from "../Input";
 import { Titulo } from "../Titulo/Titulo";
@@ -31,11 +30,12 @@ const ItemForm = styled.div`
 `
 interface IFormulario{
     titulo: string,
-    descricao: string
+    descricao: string,
 }
 
-function Formulario(Form:IFormulario) {
-    const [price, setPrice] = useState("");
+
+function FormularioRecipe(Form:IFormulario) {
+    const [price, setPrice] = useState<number | string>(0);
     const [description, setDescription] = useState("");
     const [error, setError] = useState("");
 
@@ -47,37 +47,39 @@ function Formulario(Form:IFormulario) {
           setError("Preencha todos os campos");
           return;
         }
-    
-        const user = await axiosInstance.get()
 
+        const parsePrice=Number(price)
+
+        const userId=Number(localStorage.getItem('user_id'))
+        
         const res = await axiosInstance.post('/createRecipe',{
-          price,
+          price: parsePrice,
           description,
-          user
+          userId
         })
     
         if (response.data.error) {
           setError(response.data.error);
         } else {
-          alert("Usuário cadastrado com sucesso!");
-          navigate("/");
+          alert("Faturamento cadastrado com sucesso!");
         }
       } catch (error) {
-        console.error('Erro ao cadastrar usuário:', error);
-        setError("Erro ao cadastrar usuário. Por favor, tente novamente mais tarde.");
+        setError("Erro ao cadastrar novo faturamento. Por favor, tente novamente mais tarde.");
       }
     };
 
         return(
             <CorpoForm>
                 <ItemForm>
-                       <Titulo>{Form.titulo}</Titulo>
+                    <Titulo>{Form.titulo}</Titulo>
                     <Input 
                     type="number"
                     name="price"
+                    value={price}
                     id="user"
                     placeholder="Informe o Valor"
-                    required  
+                    required 
+                    onChange={(e) => {setPrice(e.target.value),setError("")}}
                     style={{
                         alignItems:'center',
                         height: '10px'
@@ -85,15 +87,15 @@ function Formulario(Form:IFormulario) {
                     />
                     <Titulo>{Form.descricao}</Titulo>
                     <Input 
+                    onChange={(e) => {setDescription  (e.target.value),setError("")}}
                     style={{height: '10px'}}
-
                     type="text"
                     name="description"
                     id="email"
                     placeholder="Informe a descrição"
                     required
                     />
-                    <button 
+                    <button onClick={handleCreate}
                 style={{
                     border: '1px solid #000',
                     background: '#000',
@@ -119,4 +121,4 @@ function Formulario(Form:IFormulario) {
     }
 
 
-export default Formulario
+export default FormularioRecipe
